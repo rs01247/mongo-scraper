@@ -1,3 +1,8 @@
-#hello {
-    color: red
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+#logo{
+    color: #f0f0f0;
+    font-size: 4vh;
 }
