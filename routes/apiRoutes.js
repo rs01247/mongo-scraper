@@ -12,24 +12,24 @@ router.get('/scrape', function (req, res) {
 
             // LOAD RESPONSE INTO CHEERIO AND SAVE AS '$'
             const $ = cheerio.load(resp.data);
+            const result = {};
 
-            // GRAB EVERY LINK W/ TITLE CLASS
-            $('div h2').each((i, elem) => {
-                const result = {};
+            // GRAB EVERY TITLE AND LINK FROM TIHS DIV W/ H2
+            $('div.c-entry-box--compact__body').each((i, elem) => {
 
-                result.title = $(this)
-                .children("a")
-                .text();
-              result.link = $(this)
-                .children("a")
-                .attr("href");  
+                result.title = $(elem)
+                    .find('h2.c-entry-box--compact__title')
+                    .text();
+                result.link = $(elem)
+                    .find('a')
+                    .attr("href");
 
                 db.Article.create(result)
                     .then(dbArticle => console.log(dbArticle))
                     .catch(err => { return res.json(err) });
             });
 
-            res.send('Your Scrape has completed');
+            res.render("index", { Article: data })
         });
 });
 
