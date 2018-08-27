@@ -4,12 +4,7 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-// const cheerio = require('cheerio');
-// const axios = require('axios');
 const request = require('request');
-
-// // ACCESS MODELS FOLDER W/ ARTICLE AND NOTE
-// const db = require('./models')
 
 // ROUTING
 const htmlRoutes = require('./routes/htmlRoutes');
@@ -19,6 +14,7 @@ const apiRoutes = require('./routes/apiRoutes');
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 const PORT = process.env.PORT || 8080;
 const app = express();
+
 // request('http://www.reddit.com', function (error, response, body) {
 //   console.log('error:', error); // Print the error if one occurred
 //   console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
@@ -48,13 +44,15 @@ mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true
 });
 
-// mongoose.connection.on('error', function () {
-//     console.error('MongoDB Connection Error. Make sure MongoDB is running.');
-// });
-// mongoose.connection.once("open", function () {
-//     console.log("Mongoose connection successful.");
-// });
+// STATUS UPDATES ON MONGOOSE CONNECTION
+mongoose.connection.on('error', function () {
+    console.error('MongoDB Connection Error. Make sure MongoDB is running.');
+});
+mongoose.connection.once("open", function () {
+    console.log('Mongoose connection successful.');
+});
 
+// CONTROLLER
 app.use(apiRoutes);
 app.use(htmlRoutes);
 

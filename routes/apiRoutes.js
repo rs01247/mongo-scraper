@@ -22,14 +22,14 @@ router.get('/scrape', function (req, res) {
                     .text();
                 result.link = $(elem)
                     .find('a')
-                    .attr("href");
+                    .attr('href');
 
                 db.Article.create(result)
                     .then(dbArticle => console.log(dbArticle))
                     .catch(err => { return res.json(err) });
             });
 
-            res.render("index", { Article: data })
+            res.render('index', { Article: data })
         });
 });
 
@@ -55,6 +55,46 @@ router.post('/articles/:id', (req, res) => {
         })
         .then(dbArticle => res.json(dbArticle))
         .catch(err => res.json(err));
+})
+
+// ACCESS SAVED ARTICLES
+router.get('/saved', (req, res) => {
+    dbArticle.find({})
+        .then(dbArticle => {
+            res.render('saved', { Article: dbArticle })
+        })
+        .catch(err => res.json(err));
+})
+
+// POST TO SAVED ARTICLES
+router.post('/saved', function (req, res) {
+    const saveData = {};
+    const title = req.body.title;
+    const summary = req.body.summary;
+    saveData.title = title;
+    saveData.summary = summary;
+    dbArticle.create(saveData)
+        .then(dbArticle => console.log(dbArticle))
+        .catch(err => {
+            return res.json(err);
+        });
+
+    res.redirect('/scrape', )
+})
+
+// DELETE A SAVED ARTICLE
+router.get('/delete?:id', (req, res) => {
+    console.log(req.query.id)
+    console.log(req.body.id)
+    dbArticle.remove({ _id: req.query.id }, (err) => {
+        if (!err) {
+            res.redirect('/saved')
+        }
+        else {
+            res.json(err);
+        }
+    });
+
 })
 
 module.exports = router;
