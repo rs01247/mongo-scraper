@@ -6,6 +6,18 @@ $.getJSON("/articles", data => {
     }
 });
 
+$('#logo').on('click', () => {
+    axios.get('/scrape')
+        .then(data => {
+            console.log(data);
+            
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+        window.location.href = '/';
+})
 
 $(document).on("click", "p", () => {
     $("#notes").empty();

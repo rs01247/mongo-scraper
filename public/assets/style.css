@@ -4,13 +4,11 @@ body {
 
 #verge-logo {
     width: 100%;
-    clear: both;
 }
 
 #logo{
     color: purple;
     font-size: 4vh;
-    display: block;
 }
 
 #wrapper {
